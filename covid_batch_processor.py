@@ -120,11 +120,6 @@ print("\n--- 5. Distribución de Casos por Tipo de Contagio ---")
 df_tipo_contagio.show(5, truncate=False)
 
 
-# ----------------------------------------------------------------------
-# FINALIZACIÓN Y ALMACENAMIENTO (Opcional)
-# ----------------------------------------------------------------------
-
-# Opcional: Almacenar la tabla principal para uso posterior
 OUTPUT_PATH = "/tmp/spark_output/covid_letalidad_batch.parquet"
 df_letalidad_depto.write.mode("overwrite").parquet(OUTPUT_PATH)
 print(f"\nResultados del Batch almacenados en: {OUTPUT_PATH}")
