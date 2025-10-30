@@ -42,13 +42,13 @@ df_with_time = parsed_df.withColumn(
     col("timestamp_reporte").cast("timestamp")
 )
 
-# 6. Lógica de Negocio: Tasa de Letalidad en Streaming
+# 6. Tasa de Letalidad en Streaming
 df_procesado = df_with_time.withColumn(
     "es_fallecido",
     when(col("Estado").cast("string") == "Fallecido", 1).otherwise(0)
 )
 
-# 6.2. Agregación: Ventana y Watermark optimizados para pruebas
+# 6.2. Ventana y Watermark optimizados para pruebas
 df_agg = df_procesado \
     .withWatermark("timestamp", "5 minutes") \
     .groupBy(
@@ -64,7 +64,7 @@ df_agg = df_procesado \
         round((col("Fallecidos_Recibidos") / col("Casos_Recibidos")) * 100, 2)
     )
 
-# 7. Iniciar la Consulta de Streaming (Output)
+# 7. Iniciar la Consulta de Streaming
 query = df_agg.writeStream \
     .outputMode("update") \
     .format("console") \
