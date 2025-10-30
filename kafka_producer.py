@@ -18,7 +18,7 @@ producer = KafkaProducer(
     api_version=(0, 10, 1) 
 )
 
-# 2. Columnas Estandarizadas (Usamos minúsculas y sin tildes para la selección)
+# 2. Columnas Estandarizadas
 # El script limpiará los encabezados del CSV para que coincidan con esta lista.
 COLUMNAS_CODIGO = [
     "id de caso", 
@@ -31,7 +31,7 @@ COLUMNAS_CODIGO = [
 def enviar_chunk_a_kafka(df_chunk):
     """Procesa un bloque de filas (chunk) y las envía a Kafka."""
     
-    # 4. Construir el Payload (JSON) - Usa el esquema que el Consumer espera (en español)
+    # 4. Construir el Payload 
     for index, row in df_chunk.iterrows():
         
         try:
@@ -51,7 +51,7 @@ def enviar_chunk_a_kafka(df_chunk):
 
         try:
             producer.send(TEMA_KAFKA, value=payload)
-            # print(f"Sent: {payload}") # Descomentar si quieres ver todos los mensajes
+            # print(f"Sent: {payload}")
         except Exception as e:
             print(f"Error sending to Kafka: {e}")
 
@@ -64,7 +64,6 @@ try:
     
     # Procesar todos los bloques
     for chunk in csv_iterator:
-        # 🌟 PASO CLAVE: LIMPIEZA DE ENCABEZADOS 🌟
         # 1. Eliminar espacios alrededor, 2. Convertir a minúsculas
         chunk.columns = chunk.columns.str.strip().str.lower()
         
